@@ -1,26 +1,61 @@
 """Shared helpers for the example scripts.
 
 Keeps the export logic in one place so every example obeys the project rules:
-STEP by default, no silent fallbacks (failures raise), and output always lands
-in the repo-level ``output/`` directory regardless of the current working
-directory.
+STEP by default, no silent fallbacks (failures raise), and the output directory
+is read from ``settings.yml``.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import cadquery as cq
+import yaml
 
 # Repo root is the parent of the examples/ directory this file lives in.
-REPO_ROOT = Path("D:/CAD/llm_cad")
-OUTPUT_DIR = REPO_ROOT / "output"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+SETTINGS_PATH = REPO_ROOT / "settings.yml"
+
+
+def load_settings(section: str | None = None) -> dict[str, Any]:
+    """Load settings.yml, optionally returning a named section."""
+    if not SETTINGS_PATH.exists():
+        raise RuntimeError(f"Missing settings file: {SETTINGS_PATH}")
+
+    with SETTINGS_PATH.open("r", encoding="utf-8") as stream:
+        settings = yaml.safe_load(stream)
+
+    if not isinstance(settings, dict):
+        raise RuntimeError(f"Settings file must contain a mapping: {SETTINGS_PATH}")
+
+    if section is None:
+        return settings
+
+    try:
+        selected = settings[section]
+    except KeyError as exc:
+        raise RuntimeError(
+            f"Missing settings section '{section}' in {SETTINGS_PATH}"
+        ) from exc
+
+    if not isinstance(selected, dict):
+        raise RuntimeError(
+            f"Settings section '{section}' must contain a mapping"
+        )
+    return selected
 
 
 def output_path(filename: str) -> Path:
     """Return an absolute path inside output/, creating the directory."""
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    return OUTPUT_DIR / filename
+    settings = load_settings()
+    try:
+        output_dir = Path(settings["output_dir"])
+    except KeyError as exc:
+        raise RuntimeError(f"Missing 'output_dir' in {SETTINGS_PATH}") from exc
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    return output_dir / filename
 
 
 def export(obj, basename: str, *, step: bool = True, stl: bool = False,
