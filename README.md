@@ -48,6 +48,7 @@ python examples/01_basic_box.py            # -> output/basic_box.step + .stl
 python examples/02_bracket.py              # -> output/bracket.step
 python examples/03_assembly.py             # -> output/assembly.step
 python examples/04_plane.py                # -> output/plane.step
+python examples/05_inventor_quader.py      # -> output/inventor_quader.ipt
 ```
 
 | Script | What it builds | Exports |
@@ -56,11 +57,12 @@ python examples/04_plane.py                # -> output/plane.step
 | `02_bracket.py`   | L-shaped mounting bracket: 2 base holes, 1 wall hole, filleted inner corner | STEP |
 | `03_assembly.py`  | Two-part assembly (bolt through plate) using the Assembly API | STEP |
 | `04_plane.py`     | Zero-thickness rectangular planar face | STEP |
+| `05_inventor_quader.py` | Native Inventor part: centred 1 m quader plus offset work plane | IPT |
 
 All dimensions are in millimetres.
 
-Default dimensions and the output directory are defined in `settings.yml`.
-Edit that file to change geometry parameters.
+Default dimensions, Inventor template paths, and the output directory are
+defined in `settings.yml`. Edit that file to change geometry parameters.
 
 ## Opening STEP files in Autodesk Inventor
 
@@ -106,7 +108,8 @@ llm_cad/
 │   ├── 01_basic_box.py
 │   ├── 02_bracket.py
 │   ├── 03_assembly.py
-│   └── 04_plane.py
+│   ├── 04_plane.py
+│   └── 05_inventor_quader.py
 └── output/              # generated STEP/IGES/STL (gitignored)
 ```
 

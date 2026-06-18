@@ -27,3 +27,9 @@ plane:
   length: 100.0
   width: 50.0
   z: 0.0
+
+inventor_quader:
+  side_length_cm: 100.0
+  offset_plane_cm: 20.0
+  template: C:/Users/Public/Documents/Autodesk/Inventor 2026/Templates/en-US/Metric/Standard (mm).ipt
+  output_file: inventor_quader.ipt
