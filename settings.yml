@@ -1,0 +1,29 @@
+output_dir: D:/CAD/llm_cad/output
+
+basic_box:
+  length: 60.0
+  width: 40.0
+  height: 20.0
+
+bracket:
+  length: 80.0
+  base_depth: 60.0
+  wall_height: 50.0
+  thickness: 6.0
+  hole_dia: 6.5
+  inner_fillet: 5.0
+
+assembly:
+  plate_l: 60.0
+  plate_w: 40.0
+  plate_t: 8.0
+  hole_dia: 8.5
+  bolt_dia: 8.0
+  shank_len: 20.0
+  head_dia: 13.0
+  head_t: 6.0
+
+plane:
+  length: 100.0
+  width: 50.0
+  z: 0.0
