@@ -38,25 +38,29 @@ python -c "import build123d; print('build123d', build123d.__version__)"
 ## Running the examples
 
 Activate the environment first, then run any example standalone from the repo
-root. Generated files land in `output/` (gitignored).
+root. Generated files land in the `output_dir` configured in `settings.yml`
+(`D:/CAD/llm_cad/output` by default).
 
 ```powershell
 conda activate env_llm_cad
 
 python examples/01_basic_box.py            # -> output/basic_box.step + .stl
-python examples/01_basic_box.py --length 80 --width 40 --height 25
-
 python examples/02_bracket.py              # -> output/bracket.step
 python examples/03_assembly.py             # -> output/assembly.step
+python examples/04_plane.py                # -> output/plane.step
 ```
 
 | Script | What it builds | Exports |
 |--------|----------------|---------|
-| `01_basic_box.py` | Parametric box (CLI args for L/W/H) | STEP, STL |
+| `01_basic_box.py` | Parametric box | STEP, STL |
 | `02_bracket.py`   | L-shaped mounting bracket: 2 base holes, 1 wall hole, filleted inner corner | STEP |
 | `03_assembly.py`  | Two-part assembly (bolt through plate) using the Assembly API | STEP |
+| `04_plane.py`     | Zero-thickness rectangular planar face | STEP |
 
 All dimensions are in millimetres.
+
+Default dimensions and the output directory are defined in `settings.yml`.
+Edit that file to change geometry parameters.
 
 ## Opening STEP files in Autodesk Inventor
 
@@ -93,13 +97,16 @@ STL files (e.g. `basic_box.stl`) can be brought in via **File ▸ Open** with th
 ```
 llm_cad/
 ├── environment.yml      # conda environment spec
+├── settings.yml         # geometry parameters and output directory
 ├── README.md
 ├── CLAUDE.md            # hard project constraints
 ├── examples/
 │   ├── _common.py       # shared export helper (STEP default, no fallbacks)
+│   ├── geometry.py      # reusable object-oriented CadQuery models
 │   ├── 01_basic_box.py
 │   ├── 02_bracket.py
-│   └── 03_assembly.py
+│   ├── 03_assembly.py
+│   └── 04_plane.py
 └── output/              # generated STEP/IGES/STL (gitignored)
 ```
 
